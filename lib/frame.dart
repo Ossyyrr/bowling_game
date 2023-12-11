@@ -1,9 +1,9 @@
 import 'package:bowling_game/roll.dart';
 
 class Frame {
-  List<Roll> rolls = [];
   int maxPins = 10;
   int bonus = 0;
+  ComposableRoll rolls = ComposableRoll();
 
   void roll(int pins) {
     if (isOverMaxPins(pins)) {
@@ -13,18 +13,27 @@ class Frame {
     addRollScore(pins);
   }
 
-  void addRollScore(int pins) => rolls.add(Roll(pins));
+  // bool get isStrike => rolls.length == 1 && score() == 10;
+  // bool get isSpare => rolls.length == 2 && score() == 10;
 
-  void addRollWithMaxScore() => rolls.add(Roll(maxPins - score()));
+  void addRollScore(int pins) {
+    rolls.execute(pins);
+  }
+
+  void addRollWithMaxScore() {
+    rolls.execute(maxPins - score());
+  }
 
   bool isOverMaxPins(int pins) => score() + pins > maxPins;
 
-  bool morePinsThanMax(int pins) => rolls[0].score + pins > 10;
+  bool morePinsThanMax(int pins) => rolls.asList()[0].score + pins > 10;
 
-  bool get isFirstRoll => rolls.length == 1;
+  bool get isFirstRoll => rolls.asList().length == 1;
 
   int score() {
-    if (rolls.isEmpty) return 0;
-    return rolls.map((roll) => roll.score).reduce((a, b) => a + b);
+    if (rolls.asList().isEmpty) return 0;
+
+    return rolls.asList().map((roll) => roll.score).reduce((a, b) => a + b) +
+        bonus;
   }
 }

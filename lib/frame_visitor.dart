@@ -25,7 +25,7 @@ class FrameVisitor {
   void calculateBonus(ComposableFrame frames) {
     if (frames.nextFrame != null) {
       if (frames.isSpare()) {
-        bonus += frames.nextFrame!.rolls.score;
+        bonus += frames.nextFrame!.getFirstRollScore();
       }
     }
 

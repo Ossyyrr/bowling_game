@@ -5,7 +5,7 @@ import 'package:bowling_game/roll_visitor.dart';
 class ComposableFrame {
   final int _maxPins = 10;
   ComposableFrame? nextFrame;
-  final ComposableRoll rolls = ComposableRoll();
+  final ComposableRoll _rolls = ComposableRoll();
 
   void execute(int pins) {
     if (_isCompleted()) {
@@ -13,8 +13,10 @@ class ComposableFrame {
       return;
     }
     pins = _checkMaxPinsTrap(pins);
-    rolls.execute(pins);
+    _rolls.execute(pins);
   }
+
+  int getFirstRollScore() => _rolls.score;
 
   void accept(FrameVisitor visitor) {
     visitor.execute(this);
@@ -54,7 +56,7 @@ class ComposableFrame {
 
   RollVisitor visitRolls() {
     RollVisitor visitor = RollVisitor();
-    rolls.accept(visitor);
+    _rolls.accept(visitor);
     return visitor;
   }
 }

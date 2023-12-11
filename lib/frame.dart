@@ -27,7 +27,7 @@ class Frame {
 
   bool isOverMaxPins(int pins) => score() + pins > maxPins;
 
-  bool get isFirstRoll => visitRolls().visits == 1;
+  bool get isFirstRoll => visitRolls().length == 1;
 
   int score() => visitRolls().score;
 

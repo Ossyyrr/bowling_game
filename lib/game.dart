@@ -13,7 +13,7 @@ class Game {
     actualFrame().roll(pins);
   }
 
-  bool isLastRoll() => actualFrame().rolls.asList().length == 2;
+  bool isLastRoll() => actualFrame().visitRolls().length == 2;
 
   void nextFrame() {
     currentFrame++;
@@ -24,6 +24,5 @@ class Game {
 
   int score() => frames.map((frame) => frame.score()).reduce((a, b) => a + b);
 
-  bool isEndGame() =>
-      frames.length == 10 && frames[9].rolls.asList().length == 2;
+  bool isEndGame() => frames.length == 10 && frames[9].visitRolls().length == 2;
 }

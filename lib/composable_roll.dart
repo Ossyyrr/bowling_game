@@ -24,11 +24,11 @@ class ComposableRoll {
     return nextRoll!;
   }
 
-  List<ComposableRoll> asList() {
-    List<ComposableRoll> rolls = [this];
-    if (nextRoll != null) {
-      rolls.addAll(nextRoll!.asList());
-    }
-    return rolls;
-  }
+  // List<ComposableRoll> asList() {
+  //   List<ComposableRoll> rolls = [this];
+  //   if (nextRoll != null) {
+  //     rolls.addAll(nextRoll!.asList());
+  //   }
+  //   return rolls;
+  // }
 }

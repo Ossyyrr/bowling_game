@@ -27,13 +27,9 @@ class Frame {
 
   bool isOverMaxPins(int pins) => score() + pins > maxPins;
 
-  bool morePinsThanMax(int pins) => rolls.asList()[0].score + pins > 10;
+  bool get isFirstRoll => visitRolls().visits == 1;
 
-  bool get isFirstRoll => rolls.asList().length == 1;
-
-  int score() {
-    return visitRolls().score;
-  }
+  int score() => visitRolls().score;
 
   RollVisitor visitRolls() {
     RollVisitor visitor = RollVisitor();

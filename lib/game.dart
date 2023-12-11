@@ -9,7 +9,7 @@ class Game {
     frames.execute(pins);
   }
 
-  int score() => visitFrames().score;
+  int score() => visitFrames().totalScore();
 
   bool _isEndGame() => visitFrames().isLastFrameCompleted;
 

@@ -4,8 +4,8 @@ import 'package:bowling_game/roll_visitor.dart';
 
 class ComposableFrame {
   final int _maxPins = 10;
-  ComposableFrame? _nextFrame;
-  final ComposableRoll _rolls = ComposableRoll();
+  ComposableFrame? nextFrame;
+  final ComposableRoll rolls = ComposableRoll();
 
   void execute(int pins) {
     if (_isCompleted()) {
@@ -13,15 +13,15 @@ class ComposableFrame {
       return;
     }
     pins = _checkMaxPinsTrap(pins);
-    _rolls.execute(pins);
+    rolls.execute(pins);
   }
 
   void accept(FrameVisitor visitor) {
     visitor.execute(this);
-    _nextFrame?.accept(visitor);
+    nextFrame?.accept(visitor);
   }
 
-  int score() => _visitRolls().score;
+  int score() => visitRolls().score;
 
   int _checkMaxPinsTrap(int pins) {
     if (_isOverMaxPins(pins)) {
@@ -30,25 +30,31 @@ class ComposableFrame {
     return pins;
   }
 
-  bool isLastRoll() => _visitRolls().length == 2;
+  bool isFirstRoll() => visitRolls().length == 1;
+  bool isSecondRoll() => visitRolls().length == 2;
+
+  bool isLastRoll() => visitRolls().length == 2; // TODO
+
+  bool isSpare() => visitRolls().length == 2 && score() == 10;
+  // bool isStrike() => isFirstRoll() && score() == 10;
 
   ComposableFrame _createNextFrame() {
-    _nextFrame ??= ComposableFrame();
-    return _nextFrame!;
+    nextFrame ??= ComposableFrame();
+    return nextFrame!;
   }
 
   bool _isCompleted() => _isLastRoll();
 
-  bool _isLastRoll() => _visitRolls().length == 2;
+  bool _isLastRoll() => visitRolls().length == 2;
 
   // bool get isStrike => rolls.length == 1 && score() == 10;
   // bool get isSpare => rolls.length == 2 && score() == 10;
 
   bool _isOverMaxPins(int pins) => score() + pins > _maxPins;
 
-  RollVisitor _visitRolls() {
+  RollVisitor visitRolls() {
     RollVisitor visitor = RollVisitor();
-    _rolls.accept(visitor);
+    rolls.accept(visitor);
     return visitor;
   }
 }

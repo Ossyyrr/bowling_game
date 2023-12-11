@@ -1,28 +1,27 @@
-import 'package:bowling_game/frame.dart';
+import 'package:bowling_game/composable_frame.dart';
 
 class Game {
-  List<Frame> frames = [Frame()];
+  ComposableFrame frames = ComposableFrame();
   int currentFrame = 0;
 
   void roll(int pins) {
     if (isEndGame()) return;
+    actualFrame().execute(pins);
+  }
 
-    if (isLastRoll()) {
-      nextFrame();
-    }
-    actualFrame().roll(pins);
+  void nextFrame() {
+    currentFrame++;
+    frames.asList().add(ComposableFrame());
   }
 
   bool isLastRoll() => actualFrame().visitRolls().length == 2;
 
-  void nextFrame() {
-    currentFrame++;
-    frames.add(Frame());
-  }
+  ComposableFrame actualFrame() => frames.asList().last;
 
-  Frame actualFrame() => frames[currentFrame];
+  int score() =>
+      frames.asList().map((frame) => frame.score()).reduce((a, b) => a + b);
 
-  int score() => frames.map((frame) => frame.score()).reduce((a, b) => a + b);
-
-  bool isEndGame() => frames.length == 10 && frames[9].visitRolls().length == 2;
+  bool isEndGame() =>
+      frames.asList().length == 10 &&
+      frames.asList()[9].visitRolls().length == 2;
 }

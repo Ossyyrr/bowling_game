@@ -1,4 +1,5 @@
-import 'package:bowling_game/roll.dart';
+import 'package:bowling_game/composable_roll.dart';
+import 'package:bowling_game/roll_visitor.dart';
 
 class Frame {
   int maxPins = 10;
@@ -31,9 +32,12 @@ class Frame {
   bool get isFirstRoll => rolls.asList().length == 1;
 
   int score() {
-    if (rolls.asList().isEmpty) return 0;
+    return visitRolls().score;
+  }
 
-    return rolls.asList().map((roll) => roll.score).reduce((a, b) => a + b) +
-        bonus;
+  RollVisitor visitRolls() {
+    RollVisitor visitor = RollVisitor();
+    rolls.accept(visitor);
+    return visitor;
   }
 }

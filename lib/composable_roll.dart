@@ -1,3 +1,5 @@
+import 'package:bowling_game/roll_visitor.dart';
+
 class ComposableRoll {
   ComposableRoll? nextRoll;
   int score = 0;
@@ -10,6 +12,11 @@ class ComposableRoll {
     }
     score = pins;
     isCompleted = true;
+  }
+
+  void accept(RollVisitor visitor) {
+    visitor.execute(this);
+    nextRoll?.accept(visitor);
   }
 
   ComposableRoll createNextRoll() {

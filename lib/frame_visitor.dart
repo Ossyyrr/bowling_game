@@ -16,8 +16,6 @@ class FrameVisitor {
     score += frames.score();
 
     calculateBonus(frames);
-
-    // BONUS
   }
 
   int totalScore() => score + bonus;
@@ -53,5 +51,17 @@ class FrameVisitor {
 
   bool nextFrameIsStrike(ComposableFrame frames) =>
       frames.nextFrame!.isStrike();
-  bool isEndGame(ComposableFrame frames) => length == 10 && frames.isLastRoll();
+
+  bool isEndGame(ComposableFrame frames) {
+    if (isTenFrame) {
+      if ((frames.isStrike() || frames.isSpare())) {
+        return frames.visitRolls().hasThreeRolls();
+      } else {
+        return isTenFrame && frames.isSecondRoll();
+      }
+    }
+    return false;
+  }
+
+  bool get isTenFrame => length == 10;
 }

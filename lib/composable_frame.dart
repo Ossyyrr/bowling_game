@@ -3,9 +3,12 @@ import 'package:bowling_game/frame_visitor.dart';
 import 'package:bowling_game/roll_visitor.dart';
 
 class ComposableFrame {
+  ComposableFrame({this.frameCount = 1});
+  int frameCount;
+
   final int _maxPins = 10;
   ComposableFrame? nextFrame;
-  final ComposableRoll _rolls = ComposableRoll();
+  final ComposableRoll rolls = ComposableRoll();
 
   void execute(int pins) {
     if (_isCompleted()) {
@@ -13,14 +16,15 @@ class ComposableFrame {
       return;
     }
     pins = _checkMaxPinsTrap(pins);
-    _rolls.execute(pins);
+    rolls.execute(pins);
   }
 
-  int getFirstRollScore() => _rolls.score;
-  int getSecondRollScore() => _rolls.nextRoll!.score;
+  int getFirstRollScore() => rolls.score;
+  int getSecondRollScore() => rolls.nextRoll!.score;
 
   void accept(FrameVisitor visitor) {
     visitor.execute(this);
+
     nextFrame?.accept(visitor);
   }
 
@@ -33,26 +37,38 @@ class ComposableFrame {
     return pins;
   }
 
-  bool isLastRoll() => visitRolls().length == 2; // TODO
+  bool isSecondRoll() => visitRolls().length == 2; // TODO
 
   bool isSpare() => visitRolls().length == 2 && score() == 10;
-  bool isStrike() => _rolls.score == 10;
+  bool isStrike() => rolls.score == 10;
 
   ComposableFrame _createNextFrame() {
-    nextFrame ??= ComposableFrame();
+    nextFrame ??= ComposableFrame(frameCount: frameCount + 1);
     return nextFrame!;
   }
 
-  bool _isCompleted() => isLastRoll() || isStrike();
+  bool _isCompleted() {
+    if (!isTenFrame()) {
+      return isSecondRoll() || isStrike();
+    }
 
-  // bool get isStrike => rolls.length == 1 && score() == 10;
-  // bool get isSpare => rolls.length == 2 && score() == 10;
+    if (isTenFrame()) {
+      if (isSpare() || isStrike()) {
+        return visitRolls().hasThreeRolls();
+      }
+      return isSecondRoll();
+    }
+
+    return false;
+  }
+
+  bool isTenFrame() => frameCount == 10;
 
   bool _isOverMaxPins(int pins) => score() + pins > _maxPins;
 
   RollVisitor visitRolls() {
     RollVisitor visitor = RollVisitor();
-    _rolls.accept(visitor);
+    rolls.accept(visitor);
     return visitor;
   }
 }

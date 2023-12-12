@@ -11,7 +11,7 @@ class ComposableFrame {
   final ComposableRoll rolls = ComposableRoll();
 
   void execute(int pins) {
-    if (_isCompleted()) {
+    if (isCompleted()) {
       _createNextFrame().execute(pins);
       return;
     }
@@ -28,8 +28,6 @@ class ComposableFrame {
     nextFrame?.accept(visitor);
   }
 
-  int score() => visitRolls().score;
-
   int _checkMaxPinsTrap(int pins) {
     if (_isOverMaxPins(pins) && !isTenFrame()) {
       pins = _maxPins - score();
@@ -37,17 +35,12 @@ class ComposableFrame {
     return pins;
   }
 
-  bool isSecondRoll() => visitRolls().length == 2; // TODO
-
-  bool isSpare() => visitRolls().length == 2 && score() == 10;
-  bool isStrike() => rolls.score == 10;
-
   ComposableFrame _createNextFrame() {
     nextFrame ??= ComposableFrame(frameCount: frameCount + 1);
     return nextFrame!;
   }
 
-  bool _isCompleted() {
+  bool isCompleted() {
     if (!isTenFrame()) {
       return isSecondRoll() || isStrike();
     }
@@ -62,9 +55,13 @@ class ComposableFrame {
     return false;
   }
 
+  bool isSecondRoll() => visitRolls().length == 2;
   bool isTenFrame() => frameCount == 10;
-
+  int score() => visitRolls().score;
   bool _isOverMaxPins(int pins) => score() + pins > _maxPins;
+
+  bool isSpare() => visitRolls().length == 2 && score() == 10;
+  bool isStrike() => rolls.score == 10;
 
   RollVisitor visitRolls() {
     RollVisitor visitor = RollVisitor();

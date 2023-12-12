@@ -8,14 +8,12 @@ class FrameVisitor {
 
   void execute(ComposableFrame frames) {
     length++;
+    score += frames.score();
+    calculateBonus(frames);
 
     if (isEndGame(frames)) {
       isLastFrameCompleted = true;
     }
-
-    score += frames.score();
-
-    calculateBonus(frames);
   }
 
   int totalScore() => score + bonus;
@@ -48,20 +46,8 @@ class FrameVisitor {
   bool existTwoFramesNext(ComposableFrame frames) =>
       frames.nextFrame!.nextFrame != null;
   bool existNextFrame(ComposableFrame frames) => frames.nextFrame != null;
-
   bool nextFrameIsStrike(ComposableFrame frames) =>
       frames.nextFrame!.isStrike();
-
-  bool isEndGame(ComposableFrame frames) {
-    if (isTenFrame) {
-      if ((frames.isStrike() || frames.isSpare())) {
-        return frames.visitRolls().hasThreeRolls();
-      } else {
-        return isTenFrame && frames.isSecondRoll();
-      }
-    }
-    return false;
-  }
-
+  bool isEndGame(ComposableFrame frames) => isTenFrame && frames.isCompleted();
   bool get isTenFrame => length == 10;
 }

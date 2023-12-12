@@ -117,6 +117,91 @@ void main() {
     expect(game.score(), 49);
   });
 
-  test('Game 1. Example', () {});
-  test('Game 2. Example', () {});
+  test('Game 1. Example', () {
+    game.roll(9);
+    game.roll(0);
+    expect(game.score(), 9);
+
+    game.roll(9);
+    game.roll(0);
+    expect(game.score(), 18);
+
+    game.roll(10);
+    expect(game.score(), 28);
+
+    game.roll(6);
+    game.roll(4);
+    expect(game.score(), 48);
+
+    game.roll(7);
+    game.roll(3);
+    expect(game.score(), 65);
+
+    game.roll(10);
+    expect(game.score(), 85);
+
+    game.roll(10);
+    expect(game.score(), 105);
+
+    game.roll(8);
+    game.roll(1);
+    expect(game.score(), 131);
+
+    game.roll(10);
+    expect(game.score(), 141);
+
+    // FRAME 10
+    game.roll(10);
+    expect(game.score(), 161);
+
+    game.roll(10);
+    expect(game.score(), 181);
+
+    game.roll(10);
+
+    expect(game.score(), 191);
+  });
+
+  test('Game 2. Example', () {
+// With multiples strikes and spares
+  });
+  test('Game 3. Example', () {
+    // 300 points
+
+    game.roll(10);
+    expect(game.score(), 10);
+
+    game.roll(10);
+    expect(game.score(), 30);
+
+    game.roll(10);
+    expect(game.score(), 60);
+
+    game.roll(10);
+    expect(game.score(), 90);
+
+    game.roll(10);
+    expect(game.score(), 120);
+
+    game.roll(10);
+    expect(game.score(), 150);
+
+    game.roll(10);
+    expect(game.score(), 180);
+
+    game.roll(10);
+    expect(game.score(), 210);
+
+    game.roll(10);
+    expect(game.score(), 240);
+
+    game.roll(10);
+    expect(game.score(), 270);
+
+    game.roll(10);
+    expect(game.score(), 290);
+
+    game.roll(10);
+    expect(game.score(), 300);
+  });
 }

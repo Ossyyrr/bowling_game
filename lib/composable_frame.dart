@@ -31,7 +31,7 @@ class ComposableFrame {
   int score() => visitRolls().score;
 
   int _checkMaxPinsTrap(int pins) {
-    if (_isOverMaxPins(pins)) {
+    if (_isOverMaxPins(pins) && !isTenFrame()) {
       pins = _maxPins - score();
     }
     return pins;

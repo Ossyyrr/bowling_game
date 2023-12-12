@@ -53,25 +53,52 @@ void main() {
   });
 
   test(
-      'Strike: A strike is when the player knocks down all 10 pins on his first roll.',
+      'Strike: A strike is when the player knocks down all 10 pins on his first roll. The frame is then completed with a single roll. The bonus for that frame is the value of the next two rolls.',
       () {
+    // Frame 1
     game.roll(10);
     expect(game.score(), 10);
 
+    // Frame 2
     game.roll(3);
     expect(game.score(), 16);
 
     game.roll(2);
     expect(game.score(), 20);
+
+    // Frame 3
+    game.roll(10);
+    expect(game.score(), 30);
+
+    // Frame 4
+    game.roll(10);
+    expect(game.score(), 50);
+
+    // Frame 5
+    game.roll(4);
+    expect(game.score(), 62);
   });
 
-  test('Strike: The frame is then completed with a single roll', () {});
-  test('Strike: The bonus for that frame is the value of the next two rolls.',
-      () {});
+  // test(
+  //     'In the tenth frame a player who rolls a spare or strike is allowed to roll the extra balls to complete the frame. However no more than three balls can be rolled in tenth frame.',
+  //     () {
+  //   // Frame 1
 
-  test(
-      'In the tenth frame a player who rolls a spare or strike is allowed to roll the extra balls to complete the frame. However no more than three balls can be rolled in tenth frame.',
-      () {});
+  //   for (int i = 1; i < 10; i++) {
+  //     game.roll(1);
+  //     game.roll(4);
+  //   }
+  //   expect(game.score(), 45);
+
+  //   game.roll(10);
+  //   expect(game.score(), 55);
+
+  //   game.roll(2);
+  //   expect(game.score(), 57);
+
+  //   game.roll(3);
+  //   expect(game.score(), 60);
+  // });
 
   test('End Game', () {});
   test('Game 1. Example', () {});

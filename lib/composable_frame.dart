@@ -43,9 +43,7 @@ class ComposableFrame {
     return nextFrame!;
   }
 
-  bool _isCompleted() => _isLastRoll() || isStrike();
-
-  bool _isLastRoll() => visitRolls().length == 2;
+  bool _isCompleted() => isLastRoll() || isStrike();
 
   // bool get isStrike => rolls.length == 1 && score() == 10;
   // bool get isSpare => rolls.length == 2 && score() == 10;

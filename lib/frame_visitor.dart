@@ -29,32 +29,25 @@ class FrameVisitor {
   }
 
   void calculateSpare(ComposableFrame frames) {
-    if (frames.isSpare()) {
-      bonus += frames.nextFrame!.getFirstRollScore();
-    }
+    if (!frames.isSpare()) return;
+    bonus += frames.nextFrame!.getFirstRollScore();
   }
 
   void calculateStrike(ComposableFrame frames) {
-    if (frames.isStrike()) {
-      if (!nextFrameIsStrike(frames)) {
-        bonus += getNextFrameScore(frames);
-      }
+    if (!frames.isStrike()) return;
 
-      if (!existTwoFramesMore(frames)) return;
-
-      if (nextFrameIsStrike(frames)) {
-        bonus += getFirstRollScoreOfTwoNextFrames(frames);
-      }
+    if (!nextFrameIsStrike(frames)) {
+      bonus += getNextFrameScore(frames);
+      return;
     }
-  }
 
-  int getFirstRollScoreOfTwoNextFrames(ComposableFrame frames) {
-    return frames.nextFrame!.getFirstRollScore() +
-        frames.nextFrame!.nextFrame!.getFirstRollScore();
+    bonus += frames.nextFrame!.getFirstRollScore();
+    if (!existTwoFramesNext(frames)) return;
+    bonus += frames.nextFrame!.nextFrame!.getFirstRollScore();
   }
 
   int getNextFrameScore(ComposableFrame frames) => frames.nextFrame!.score();
-  bool existTwoFramesMore(ComposableFrame frames) =>
+  bool existTwoFramesNext(ComposableFrame frames) =>
       frames.nextFrame!.nextFrame != null;
   bool existNextFrame(ComposableFrame frames) => frames.nextFrame != null;
 

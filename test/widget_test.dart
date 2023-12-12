@@ -163,9 +163,6 @@ void main() {
   });
 
   test('Game 2. Example', () {
-// With multiples strikes and spares
-  });
-  test('Game 3. Example', () {
     // 300 points
 
     game.roll(10);

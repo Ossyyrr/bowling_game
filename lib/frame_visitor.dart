@@ -32,15 +32,27 @@ class FrameVisitor {
   void calculateStrike(ComposableFrame frames) {
     if (!frames.isStrike()) return;
 
+    if (isNineFrame) {
+      if (existNextFrame(frames) && nextFrameHasMoreThanOneRoll(frames)) {
+        bonus += frames.nextFrame!.getFirstRollScore();
+        bonus += frames.nextFrame!.getSecondRollScore();
+        return;
+      }
+    }
+
     if (!nextFrameIsStrike(frames)) {
       bonus += getNextFrameScore(frames);
       return;
     }
-
-    bonus += frames.nextFrame!.getFirstRollScore();
-    if (!existTwoFramesNext(frames)) return;
-    bonus += frames.nextFrame!.nextFrame!.getFirstRollScore();
+    if (nextFrameIsStrike(frames)) {
+      bonus += frames.nextFrame!.getFirstRollScore();
+      if (!existTwoFramesNext(frames)) return;
+      bonus += frames.nextFrame!.nextFrame!.getFirstRollScore();
+    }
   }
+
+  bool nextFrameHasMoreThanOneRoll(ComposableFrame frames) =>
+      frames.nextFrame!.visitRolls().length > 1;
 
   int getNextFrameScore(ComposableFrame frames) => frames.nextFrame!.score();
   bool existTwoFramesNext(ComposableFrame frames) =>
@@ -50,4 +62,5 @@ class FrameVisitor {
       frames.nextFrame!.isStrike();
   bool isEndGame(ComposableFrame frames) => isTenFrame && frames.isCompleted();
   bool get isTenFrame => length == 10;
+  bool get isNineFrame => length == 9;
 }

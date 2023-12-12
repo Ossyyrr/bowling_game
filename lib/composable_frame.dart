@@ -17,6 +17,7 @@ class ComposableFrame {
   }
 
   int getFirstRollScore() => _rolls.score;
+  int getSecondRollScore() => _rolls.nextRoll!.score;
 
   void accept(FrameVisitor visitor) {
     visitor.execute(this);
@@ -32,20 +33,17 @@ class ComposableFrame {
     return pins;
   }
 
-  bool isFirstRoll() => visitRolls().length == 1;
-  bool isSecondRoll() => visitRolls().length == 2;
-
   bool isLastRoll() => visitRolls().length == 2; // TODO
 
   bool isSpare() => visitRolls().length == 2 && score() == 10;
-  // bool isStrike() => isFirstRoll() && score() == 10;
+  bool isStrike() => _rolls.score == 10;
 
   ComposableFrame _createNextFrame() {
     nextFrame ??= ComposableFrame();
     return nextFrame!;
   }
 
-  bool _isCompleted() => _isLastRoll();
+  bool _isCompleted() => _isLastRoll() || isStrike();
 
   bool _isLastRoll() => visitRolls().length == 2;
 

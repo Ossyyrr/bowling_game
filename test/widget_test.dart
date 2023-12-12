@@ -29,7 +29,7 @@ void main() {
 
     game.roll(13);
     game.roll(3);
-    expect(game.score(), 38);
+    expect(game.score(), 44);
 
     game.roll(10);
     expect(game.score(), 58);
@@ -54,7 +54,16 @@ void main() {
 
   test(
       'Strike: A strike is when the player knocks down all 10 pins on his first roll.',
-      () {});
+      () {
+    game.roll(10);
+    expect(game.score(), 10);
+
+    game.roll(3);
+    expect(game.score(), 16);
+
+    game.roll(2);
+    expect(game.score(), 20);
+  });
 
   test('Strike: The frame is then completed with a single roll', () {});
   test('Strike: The bonus for that frame is the value of the next two rolls.',

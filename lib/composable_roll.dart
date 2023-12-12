@@ -1,7 +1,7 @@
 import 'package:bowling_game/roll_visitor.dart';
 
 class ComposableRoll {
-  ComposableRoll? _nextRoll;
+  ComposableRoll? nextRoll;
   int score = 0;
   bool _isCompleted = false;
 
@@ -16,12 +16,12 @@ class ComposableRoll {
 
   void accept(RollVisitor visitor) {
     visitor.execute(this);
-    _nextRoll?.accept(visitor);
+    nextRoll?.accept(visitor);
   }
 
   ComposableRoll _createNextRoll() {
-    _nextRoll ??= ComposableRoll();
-    return _nextRoll!;
+    nextRoll ??= ComposableRoll();
+    return nextRoll!;
   }
 
   // List<ComposableRoll> asList() {
